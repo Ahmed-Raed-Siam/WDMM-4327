@@ -33,12 +33,12 @@
     <!-- summernote -->
     <link rel="stylesheet" href="{{ asset("plugins/summernote/summernote-bs4.min.css") }}">
 </head>
-<body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
+<body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed layout-md-footer-fixed">
 <div class="wrapper">
 @include('dashboard.layout.header')
 @include('dashboard.layout.menu_sidebar')
 <!-- Content Wrapper. Contains page content -->
-    <div class="content-wrapper">
+    <div class="content-wrapper" style="min-height: 160%;">
         @include('dashboard.layout.content_header')
         <section class="content">
             @yield('content')

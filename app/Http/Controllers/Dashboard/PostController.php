@@ -106,9 +106,10 @@ class PostController extends Controller
 //        $queries = DB::getQueryLog();
 //        dd($queries);
 //        $posts = Post::all();
-        $posts = DB::table('posts')->paginate(12);
+//        $posts = DB::table('posts')->get();
+        $posts = DB::table('posts')->paginate(10);
 
-        return view('dashboard.posts.index', ['posts' => $posts]);
+        return response()->view('dashboard.posts.index', ['posts' => $posts]);
 
     }
 
@@ -143,8 +144,8 @@ class PostController extends Controller
     {
         //
 //        return view('dashboard.posts.show', ['post' => $id]);
-        return view('dashboard.posts.show', ['post' => Post::findOrFail($id)]);
-
+        $post = Post::findOrFail($id);
+        return response()->view('dashboard.posts.show', ['post' => $post]);
     }
 
     /**
@@ -179,5 +180,6 @@ class PostController extends Controller
     public function destroy($id)
     {
         //
+        echo '<h1>destroy page</h1>';
     }
 }

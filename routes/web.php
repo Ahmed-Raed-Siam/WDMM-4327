@@ -33,11 +33,14 @@ Route::get('saveEditPost', [PostController::class, 'listPost']);*/
 /*--Posts Controller NEW Resource--*/
 //Route::resource('users',UserController::class);
 /*--Route Prefix Dashboard--*/
-Route::name('dashboard.')->prefix('admin')->group(function (){
-    Route::get('/',[DashboardController::class,'index']);
-    Route::resource('users',UserController::class);
-    Route::resource('categories',CategoryController::class);
-    Route::resource('posts',PostController::class);
+//$prefixes = [
+//    'dashboard', 'admin'
+//];
+Route::name('dashboard.')->prefix('admin')->group(function () {
+    Route::get('/', [DashboardController::class, 'index']);
+    Route::resource('users', UserController::class);
+    Route::resource('categories', CategoryController::class);
+    Route::resource('posts', PostController::class);
 //    Route::resource('comments',CommentController::class);
 
 });

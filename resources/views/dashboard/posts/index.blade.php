@@ -1,13 +1,14 @@
 @extends('dashboard.layout.master')
 
 @section('page-title')
-    site dashboard
-@endsection
+    {{ $page_title=ucwords('posts table') }}
 
+@endsection
+@csrf
 @section('content')
     <div class="card">
         <div class="card-header">
-            <h3 class="card-title">Projects</h3>
+            <h3 class="card-title">{{ ucfirst($page_title) }}</h3>
 
             <div class="card-tools">
                 <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
@@ -18,8 +19,8 @@
                 </button>
             </div>
         </div>
-        <div class="card-body p-0">
-            <table class="table table-striped projects">
+        <div class="card-body table-responsive p-0">
+            <table class="table table-hover table-striped projects dataTable" id="dataTable">
                 <thead>
                 <tr>
                     <th style="width: 1%">
@@ -45,7 +46,7 @@
                 @forelse ($posts as $post)
                     <tr>
                         <td>
-                            #
+                            #{{ $counter++ }}
                         </td>
                         <td>
                             <a>
@@ -88,7 +89,7 @@
                         </td>
                         <td class="project-actions text-right">
                             <a class="btn btn-primary btn-sm"
-                               href="">
+                               href="{{ route('dashboard.posts.show',$post->id) }}">
                                 <i class="fas fa-folder">
                                 </i>
                                 View
@@ -98,17 +99,16 @@
                                 </i>
                                 Edit
                             </a>
-                            <a class="btn btn-danger btn-sm" href="#">
-                                <i class="fas fa-trash">
+                            <form class="btn btn-danger btn-sm m-0"
+                                  action="{{ route('dashboard.posts.destroy', ['post' => $post->id]) }}"
+                                  method="POST">
+                                @method('DELETE')
+                                @csrf
+                                <input name="_token" type="hidden" value="{{ csrf_token() }}"/>
+                                <i class="fas fa-trash-alt">
                                 </i>
-                                {{-- <form action="{{ action('Dashboard\UserController@destroy', ['post' => $post->id]) }}"--}}
-                                {{--       method="POST">--}}
-                                {{--     @method('DELETE')--}}
-                                {{--     @csrf--}}
-                                {{--     <button type="submit" class="btn btn-link" title="Delete" value="DELETE">Delete--}}
-                                {{--     </button>--}}
-                                {{-- </form>--}}
-                            </a>
+                                <input name="delete" type="submit" class="btn btn-danger btn-sm p-0" value="Delete">
+                            </form>
                         </td>
                     </tr>
                 @empty
