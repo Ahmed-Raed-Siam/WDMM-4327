@@ -122,6 +122,7 @@ class PostController extends Controller
     public function create()
     {
         //
+        return response()->view('dashboard.posts.create');
     }
 
     /**

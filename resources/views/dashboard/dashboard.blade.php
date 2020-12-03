@@ -1,7 +1,7 @@
 @extends('dashboard.layout.master')
 
 @section('page-title')
-    dashboard
+    {{ $page_title=ucwords('dashboard') }}
 @endsection
 
 @section('content')

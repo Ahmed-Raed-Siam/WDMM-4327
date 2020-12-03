@@ -14,7 +14,7 @@
                 <img src="{{ asset("dist/img/user2-160x160.jpg") }}" class="img-circle elevation-2" alt="User Image">
             </div>
             <div class="info">
-                <a href="#" class="d-block">Alexander Pierce</a>
+                <a href="#" class="d-block">Ahmed Raed Siam</a>
             </div>
         </div>
 
@@ -36,7 +36,7 @@
                 <!-- Add icons to the links using the .nav-icon class
                      with font-awesome or any other icon font library -->
                 <li class="nav-item menu-open">
-                    <a href="{{ route('dashboard.') }}" class="nav-link active">
+                    <a href="{{ route('dashboard.') }}" class="nav-link {{ \Illuminate\Support\Facades\Request::is('admin') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-tachometer-alt"></i>
                         <p>
                             Dashboard
@@ -45,7 +45,7 @@
                 </li>
                 <!--{{--Posts--}}-->
                 <li class="nav-item">
-                    <a href="{{ route('dashboard.posts.index') }}" class="nav-link">
+                    <a href="{{ route('dashboard.posts.index') }}" class="nav-link {{ \Illuminate\Support\Facades\Request::is('admin/posts') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-tree"></i>
                         <p>
                             Posts
@@ -54,7 +54,7 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="{{ route('dashboard.posts.create') }}" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Add Post</p>
                             </a>
@@ -69,7 +69,7 @@
                 </li>
                 <!--{{--Categories--}}-->
                 <li class="nav-item">
-                    <a href="{{ route('dashboard.categories.index') }}" class="nav-link">
+                    <a href="{{ route('dashboard.categories.index') }}" class="nav-link {{ \Illuminate\Support\Facades\Request::is('admin/categories') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-edit"></i>
                         <p>
                             Categories
@@ -104,7 +104,7 @@
                     </ul>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ route('dashboard.users.index') }}" class="nav-link">
+                    <a href="{{ route('dashboard.users.index') }}" class="nav-link {{ \Illuminate\Support\Facades\Request::is('admin/users') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-table"></i>
                         <p>
                             Users

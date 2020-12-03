@@ -25,7 +25,8 @@
                                             ?>
                                         </li>--}}
                     <li class="breadcrumb-item active">
-                        {{ ucfirst($routeName) }}
+                        {{--{{ ucfirst($routeName) }}--}}
+                        {{ ucfirst($page_title) }}
                     </li>
                 </ol>
             </div><!-- /.col -->

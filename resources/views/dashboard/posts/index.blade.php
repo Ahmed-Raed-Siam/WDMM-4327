@@ -41,7 +41,7 @@
                     </th>
                     <th style="width: 20%">
                         <a class="btn btn-outline-primary m-auto d-flex text-center float-right"
-                           href="#"
+                           href="{{ route('dashboard.posts.create') }}"
                            data-toggle="tooltip" data-placement="top"
                            title="ADD Post {{ $counter }}">
                             <i class="fas fa-plus-square p-1"></i>
