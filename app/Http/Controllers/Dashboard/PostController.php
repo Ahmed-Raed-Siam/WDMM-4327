@@ -108,6 +108,7 @@ class PostController extends Controller
 //        $posts = Post::all();
 //        $posts = DB::table('posts')->get();
         $posts = DB::table('posts')->paginate(10);
+//        $posts = DB::table('posts')->simplePaginate(10);
 
         return response()->view('dashboard.posts.index', ['posts' => $posts]);
 

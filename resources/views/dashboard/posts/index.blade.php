@@ -6,10 +6,9 @@
 @endsection
 @csrf
 @section('content')
-    <div class="card">
+    <div class="card p-2">
         <div class="card-header">
             <h3 class="card-title">{{ ucfirst($page_title) }}</h3>
-
             <div class="card-tools">
                 <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
                     <i class="fas fa-minus"></i>
@@ -19,26 +18,35 @@
                 </button>
             </div>
         </div>
-        <div class="card-body table-responsive p-0">
-            <table class="table table-hover table-striped projects dataTable" id="dataTable">
+        <!-- /.card-header -->
+
+        <div class="card-body p-0">
+            <table class="table table-hover table-responsive table-striped projects">
                 <thead>
                 <tr>
                     <th style="width: 1%">
                         #
                     </th>
                     <th style="width: 20%">
-                        Project Name
+                        Post Title
                     </th>
                     <th style="width: 30%">
-                        Team Members
+                        Feature Image
                     </th>
                     <th>
-                        Project Progress
+                        Post Views
                     </th>
                     <th style="width: 8%" class="text-center">
-                        Status
+                        Post Shares
                     </th>
                     <th style="width: 20%">
+                        <a class="btn btn-outline-primary m-auto d-flex text-center float-right"
+                           href="#"
+                           data-toggle="tooltip" data-placement="top"
+                           title="ADD Post {{ $counter }}">
+                            <i class="fas fa-plus-square p-1"></i>
+                            Add Post
+                        </a>
                     </th>
                 </tr>
                 </thead>
@@ -81,22 +89,27 @@
                                 </div>
                             </div>
                             <small>
-                                57% Complete
+                                Post Views {{ $post->views }}
+{{--                                57% Complete--}}
                             </small>
                         </td>
                         <td class="project-state">
-                            <span class="badge badge-success">Success</span>
+                            <span class="badge badge-success">{{ $post->shares }}</span>
                         </td>
                         <td class="project-actions text-right">
                             <a class="btn btn-primary btn-sm"
-                               href="{{ route('dashboard.posts.show',$post->id) }}">
-                                <i class="fas fa-folder">
-                                </i>
+                               href="{{ route('dashboard.posts.show',$post->id) }}"
+                               data-toggle="tooltip" data-placement="top"
+                               title="View Post {{ $counter }}">
+                                {{--<i class="fas fa-folder"></i>--}}
+                                <i class="fas fa-external-link-alt"></i>
                                 View
                             </a>
-                            <a class="btn btn-info btn-sm" href="#">
-                                <i class="fas fa-pencil-alt">
-                                </i>
+                            <a class="btn btn-info btn-sm"
+                               href="#"
+                               data-toggle="tooltip" data-placement="top"
+                               title="Edit Post {{ $counter }}">
+                                <i class="fas fa-pencil-alt"></i>
                                 Edit
                             </a>
                             <form class="btn btn-danger btn-sm m-0"
@@ -107,127 +120,31 @@
                                 <input name="_token" type="hidden" value="{{ csrf_token() }}"/>
                                 <i class="fas fa-trash-alt">
                                 </i>
-                                <input name="delete" type="submit" class="btn btn-danger btn-sm p-0" value="Delete">
+                                <input name="delete" type="submit" class="btn btn-danger btn-sm p-0"
+                                       value="Delete"
+                                       data-toggle="tooltip" data-placement="top"
+                                       title="Delete Post">
                             </form>
                         </td>
                     </tr>
                 @empty
                 @endforelse
-                <tr>
-                    <td>
-                        #
-                    </td>
-                    <td>
-                        <a>
-                            AdminLTE v3
-                        </a>
-                        <br/>
-                        <small>
-                            Created 01.01.2019
-                        </small>
-                    </td>
-                    <td>
-                        <ul class="list-inline">
-                            <li class="list-inline-item">
-                                <img alt="Avatar" class="table-avatar" src="{{ asset("dist/img/avatar.png") }}">
-                            </li>
-                            <li class="list-inline-item">
-                                <img alt="Avatar" class="table-avatar" src="{{ asset("dist/img/avatar2.png") }}">
-                            </li>
-                        </ul>
-                    </td>
-                    <td class="project_progress">
-                        <div class="progress progress-sm">
-                            <div class="progress-bar bg-green" role="progressbar" aria-valuenow="47" aria-valuemin="0"
-                                 aria-valuemax="100" style="width: 47%">
-                            </div>
-                        </div>
-                        <small>
-                            47% Complete
-                        </small>
-                    </td>
-                    <td class="project-state">
-                        <span class="badge badge-success">Success</span>
-                    </td>
-                    <td class="project-actions text-right">
-                        <a class="btn btn-primary btn-sm" href="#">
-                            <i class="fas fa-folder">
-                            </i>
-                            View
-                        </a>
-                        <a class="btn btn-info btn-sm" href="#">
-                            <i class="fas fa-pencil-alt">
-                            </i>
-                            Edit
-                        </a>
-                        <a class="btn btn-danger btn-sm" href="#">
-                            <i class="fas fa-trash">
-                            </i>
-                            Delete
-                        </a>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        #
-                    </td>
-                    <td>
-                        <a>
-                            AdminLTE v3
-                        </a>
-                        <br/>
-                        <small>
-                            Created 01.01.2019
-                        </small>
-                    </td>
-                    <td>
-                        <ul class="list-inline">
-                            <li class="list-inline-item">
-                                <img alt="Avatar" class="table-avatar" src="{{ asset("dist/img/avatar.png") }}">
-                            </li>
-                            <li class="list-inline-item">
-                                <img alt="Avatar" class="table-avatar" src="{{ asset("dist/img/avatar2.png") }}">
-                            </li>
-                            <li class="list-inline-item">
-                                <img alt="Avatar" class="table-avatar" src="{{ asset("dist/img/avatar3.png") }}">
-                            </li>
-                        </ul>
-                    </td>
-                    <td class="project_progress">
-                        <div class="progress progress-sm">
-                            <div class="progress-bar bg-green" role="progressbar" aria-valuenow="77" aria-valuemin="0"
-                                 aria-valuemax="100" style="width: 77%">
-                            </div>
-                        </div>
-                        <small>
-                            77% Complete
-                        </small>
-                    </td>
-                    <td class="project-state">
-                        <span class="badge badge-success">Success</span>
-                    </td>
-                    <td class="project-actions text-right">
-                        <a class="btn btn-primary btn-sm" href="#">
-                            <i class="fas fa-folder">
-                            </i>
-                            View
-                        </a>
-                        <a class="btn btn-info btn-sm" href="#">
-                            <i class="fas fa-pencil-alt">
-                            </i>
-                            Edit
-                        </a>
-                        <a class="btn btn-danger btn-sm" href="#">
-                            <i class="fas fa-trash">
-                            </i>
-                            Delete
-                        </a>
-                    </td>
-                </tr>
-
                 </tbody>
             </table>
         </div>
         <!-- /.card-body -->
-    </div>
+
+        <div class="card-footer w-100 m-0 pt-sm-2 pr-sm-2 pl-sm-1 bg-light">
+            <div class="d-block p-2">
+                <ul class="pagination m-auto d-flex justify-content-center float-right ">
+                    {!! $posts->links('vendor.pagination.custom') !!}
+                </ul>
+            </div>
+            <!-- /.card-footer -->
+
+            {{--            <div--}}
+            {{--                class="card-footer pagination dataTables_paginate page-link jsgrid-pager-nav-inactive-button pagination-centered">--}}
+            {{--                {!! $posts->links('vendor.pagination.custom') !!}--}}
+            {{--            </div>--}}
+        </div>
 @endsection
