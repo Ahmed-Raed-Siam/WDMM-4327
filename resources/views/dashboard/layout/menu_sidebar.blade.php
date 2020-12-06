@@ -35,7 +35,7 @@
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                 <!-- Add icons to the links using the .nav-icon class
                      with font-awesome or any other icon font library -->
-                <li class="nav-item menu-open">
+                <li class="nav-item {{ \Illuminate\Support\Facades\Request::is('admin') ? 'menu-is-opening menu-open' : '' }}">
                     <a href="{{ route('dashboard.') }}" class="nav-link {{ \Illuminate\Support\Facades\Request::is('admin') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-tachometer-alt"></i>
                         <p>
@@ -44,8 +44,8 @@
                     </a>
                 </li>
                 <!--{{--Posts--}}-->
-                <li class="nav-item">
-                    <a href="{{ route('dashboard.posts.index') }}" class="nav-link {{ \Illuminate\Support\Facades\Request::is('admin/posts') ? 'active' : '' }}">
+                <li class="nav-item {{ \Illuminate\Support\Facades\Request::is('admin/posts','admin/posts/create') ? 'menu-is-opening menu-open' : '' }}">
+                    <a href="{{ route('dashboard.posts.index') }}" class="nav-link {{ \Illuminate\Support\Facades\Request::is('admin/posts','admin/posts/create') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-tree"></i>
                         <p>
                             Posts
@@ -54,22 +54,22 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="{{ route('dashboard.posts.create') }}" class="nav-link">
+                            <a href="{{ route('dashboard.posts.index') }}" class="nav-link {{ \Illuminate\Support\Facades\Request::is('admin/posts') ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>Add Post</p>
+                                <p>Posts Table</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="{{ route('dashboard.posts.create') }}" class="nav-link {{ \Illuminate\Support\Facades\Request::is('admin/posts/create') ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>Edit Post</p>
+                                <p>Add Post</p>
                             </a>
                         </li>
                     </ul>
                 </li>
                 <!--{{--Categories--}}-->
-                <li class="nav-item">
-                    <a href="{{ route('dashboard.categories.index') }}" class="nav-link {{ \Illuminate\Support\Facades\Request::is('admin/categories') ? 'active' : '' }}">
+                <li class="nav-item {{ \Illuminate\Support\Facades\Request::is('admin/categories','admin/categories/create') ? 'menu-is-opening menu-open' : '' }}">
+                    <a href="{{ route('dashboard.categories.index') }}" class="nav-link {{ \Illuminate\Support\Facades\Request::is('admin/categories','admin/categories/create') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-edit"></i>
                         <p>
                             Categories
@@ -78,33 +78,21 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="{{ route('dashboard.categories.index') }}" class="nav-link {{ \Illuminate\Support\Facades\Request::is('admin/categories') ? 'active' : '' }}">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Categories Table</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('dashboard.categories.create') }}" class="nav-link {{ \Illuminate\Support\Facades\Request::is('admin/categories/create') ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Add Category</p>
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Edit Category</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Editors</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Validation</p>
-                            </a>
-                        </li>
                     </ul>
                 </li>
-                <li class="nav-item">
-                    <a href="{{ route('dashboard.users.index') }}" class="nav-link {{ \Illuminate\Support\Facades\Request::is('admin/users') ? 'active' : '' }}">
+                <li class="nav-item {{ \Illuminate\Support\Facades\Request::is('admin/users','admin/users/create') ? 'menu-is-opening menu-open' : '' }}">
+                    <a href="{{ route('dashboard.users.index') }}" class="nav-link {{ \Illuminate\Support\Facades\Request::is('admin/users','admin/users/create') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-table"></i>
                         <p>
                             Users
@@ -113,15 +101,15 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="" class="nav-link">
+                            <a href="{{ route('dashboard.users.index') }}" class="nav-link {{ \Illuminate\Support\Facades\Request::is('admin/users') ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>Add User</p>
+                                <p>Users Table</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="{{ route('dashboard.users.create') }}" class="nav-link {{ \Illuminate\Support\Facades\Request::is('admin/users/create') ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>Edit User</p>
+                                <p>Add User</p>
                             </a>
                         </li>
                     </ul>

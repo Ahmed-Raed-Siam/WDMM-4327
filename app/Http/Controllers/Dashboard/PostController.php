@@ -142,7 +142,7 @@ class PostController extends Controller
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id): \Illuminate\Http\Response
+    public function show(int $id): \Illuminate\Http\Response
     {
         //
 //        return view('dashboard.posts.show', ['post' => $id]);

@@ -66,7 +66,7 @@
             <!-- /.card-body -->
 
             <div class="card-footer">
-                <a href="#" class="btn btn-secondary">Cancel</a>
+                <a href="{{ route('dashboard.posts.index') }}" class="btn btn-secondary">Cancel</a>
                 <input type="submit" value="Create new Post" class="btn btn-success float-right">
             </div>
         </form>

@@ -2,10 +2,29 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Concerns\HasTimestamps;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Category extends Model
 {
-    use HasFactory;
+    use HasFactory,HasTimestamps;
+
+    protected $table = 'categories';
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'name',
+        'code'
+    ];
+
+//    public function posts(): \Illuminate\Database\Eloquent\Relations\HasMany
+//    {
+//        return $this->hasMany('App\Post');
+//    }
+
 }
