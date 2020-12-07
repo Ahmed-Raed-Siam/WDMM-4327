@@ -16,7 +16,7 @@ class UserController extends Controller
      *
      * @return Response
      */
-    public function index()
+    public function index(): Response
     {
         //
         $users = DB::table('users')->paginate(10);
