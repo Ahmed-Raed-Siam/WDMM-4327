@@ -5,6 +5,19 @@
 @endsection
 @csrf
 @section('content')
+    {{--Update Status--}}
+    @if( session('status') )
+        <div class="alert {{ session('status')['alert_status'] }} alert-dismissible fade show" role="alert">
+            <strong>{{ session('status')['msg'] }}</strong>
+            <p>
+                {!! session('status')['pref'] !!}
+            </p>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    @endif
+    {{--Simple Error Tracing--}}
     @if ($errors->any())
         <div class="alert alert-danger">
             <strong>Whoops!</strong> There were some problems with your input.<br><br>
@@ -32,7 +45,8 @@
                 <!-- Username input -->
                 <div class="form-group">
                     <label for="inputUsername">Username</label>
-                    <input name="username" type="text" class="form-control" id="inputUsername" placeholder="Enter username">
+                    <input name="username" type="text" class="form-control" id="inputUsername"
+                           placeholder="Enter username">
                 </div>
                 <!-- Email input -->
                 <div class="form-group">
@@ -42,7 +56,8 @@
                 <!-- Password input -->
                 <div class="form-group">
                     <label for="InputPassword">Password</label>
-                    <input name="password" type="password" class="form-control" id="InputPassword" placeholder="Password">
+                    <input name="password" type="password" class="form-control" id="InputPassword"
+                           placeholder="Password">
                 </div>
             </div>
             <!-- /.card-body -->

@@ -6,6 +6,8 @@
 @endsection
 @csrf
 @section('content')
+    @csrf
+    {{ csrf_field() }}
     @if( session('status') )
         <div class="alert {{ session('status')['alert_status'] }} alert-dismissible fade show" role="alert">
             <strong>{{ session('status')['msg'] }}</strong>
