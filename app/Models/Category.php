@@ -5,10 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Concerns\HasTimestamps;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Post;
 
 class Category extends Model
 {
-    use HasFactory,HasTimestamps;
+    use HasFactory, HasTimestamps;
 
     protected $table = 'categories';
 
@@ -22,9 +23,9 @@ class Category extends Model
         'code'
     ];
 
-//    public function posts(): \Illuminate\Database\Eloquent\Relations\HasMany
-//    {
-//        return $this->hasMany('App\Post');
-//    }
+    public function posts(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Post::class);
+    }
 
 }
