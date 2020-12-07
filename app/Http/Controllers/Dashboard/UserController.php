@@ -19,7 +19,10 @@ class UserController extends Controller
     public function index(): Response
     {
         //
-        $users = DB::table('users')->paginate(10);
+//        $users = DB::table('users')->paginate(10);
+        $users = DB::table('users')->whereNull('deleted_at')->paginate(10);
+//        $users = User::withTrashed();
+//        $users = User::withoutTrashed()->paginate(10);
         return response()->view('dashboard.users.index', ['users' => $users]);
     }
 
@@ -81,8 +84,8 @@ class UserController extends Controller
      */
     public function show(int $id): Response
     {
-        //
-        $user = User::findOrFail($id);
+        // Find User ID
+        $user = User::withoutTrashed()->findOrFail($id);
         return response()->view('dashboard.users.show', ['user' => $user]);
     }
 
@@ -112,12 +115,79 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param user $user
-     * @return Response
+     * @param int $id
+     * @return RedirectResponse
      */
-    public function destroy(user $user)
+    public function destroy(int $id): RedirectResponse
     {
-        //
-        echo '<h1>destroy page</h1>';
+        // Find User ID
+        $user = User::findOrFail($id);
+        $user_id = $id;
+        $user_name = $user->name;
+        $user_email = $user->email;
+        $alert_status = 'alert-warning';
+        // Msg
+        $msg = "Delete User $user_name Successfully.";
+        // Pref
+        $pref = "You Delete $user_name User from The System!<br>His ID : {$user_id} ,His Email : $user_email . ";
+        $status = ['alert_status' => $alert_status, 'msg' => $msg, 'pref' => $pref];
+
+        $user->delete();
+        // or
+//        $user->destory();
+
+        return redirect()->route('dashboard.users.index')->with('status', $status);
     }
+
+    /**
+     * @param int $id
+     * @return RedirectResponse
+     */
+    public function restore_from_trashed(int $id): RedirectResponse
+    {
+        // Find User ID
+        $user = User::withTrashed()->findOrFail($id);
+        $user_id = $id;
+        $user_name = $user->name;
+        $user_email = $user->email;
+        $alert_status = 'alert-success';
+        // Msg
+        $msg = "Restore User $user_name Successfully.";
+        // Pref
+        $pref = "You Restore $user_name User from The System!<br>His ID : {$user_id} ,His Email : $user_email . ";
+        $status = ['alert_status' => $alert_status, 'msg' => $msg, 'pref' => $pref];
+
+        /*Restore*/
+        $user->restore();
+        // Restore in one line
+        //User::withTrashed()->find($id)->restore();
+
+        return redirect()->route('dashboard.users.index')->with('status', $status);
+    }
+
+    /**
+     * @param int $id
+     * @return RedirectResponse
+     */
+    public function delete_from_trashed(int $id): RedirectResponse
+    {
+        // Find User ID in the trashed
+        $user = User::onlyTrashed()->findOrFail($id);
+        $user_id = $id;
+        $user_name = $user->name;
+        $user_email = $user->email;
+        $alert_status = 'alert-success';
+        // Msg
+        $msg = 'Delete User ' . $user_name . ' From The Trashed Successfully.';
+        // Pref
+        $pref = "You Delete $user_name User from The System!<br>His ID : {$user_id} ,His Email : $user_email . ";
+        $status = ['alert_status' => $alert_status, 'msg' => $msg, 'pref' => $pref];
+
+        /* Force Delete (Permanently) To delete from soft-deleted (trashed) data */
+        $user->forceDelete();
+
+        // Redirect to User Table
+        return redirect()->route('dashboard.users.index')->with('status', $status);
+    }
+
 }
