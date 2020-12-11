@@ -44,12 +44,16 @@ class UserController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
+        // Get all inputs from the form
         $input = $request->all();
+        // Validate inputs
         $request->validate([
             'username' => 'required',
             'email' => 'required',
             'password' => 'required'
         ]);
+
+        // Create instance from user model
         $user = new user();
         $user_name = $input['username'];
         $email = $input['email'];
@@ -57,15 +61,15 @@ class UserController extends Controller
         $user->name = $user_name;
         $user->email = $email;
         $user->password = $password;
-        print_r($input);
+//        print_r($input);
 //        dd($input);
 
         // Insert in Database
         $user->save();
 
-        // Get Last ID || Category ID
+        // Get Last ID || User ID
         $user_id = User::all()->last();
-        // Status for Adding the New Category To The System!
+        // Status for Adding the New User To The System!
         $alert_status = 'alert-success';
         // Msg
         $msg = 'New User Added Successfully.';
@@ -92,24 +96,58 @@ class UserController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param user $user
+     * @param int $id
      * @return Response
      */
-    public function edit(user $user)
+    public function edit(int $id): Response
     {
-        //
+        // Find User ID
+        $user = User::withoutTrashed()->findOrFail($id);
+        return response()->view('dashboard.users.edit', ['user' => $user]);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param Request $request
-     * @param user $user
-     * @return Response
+     * @param int $id
+     * @return RedirectResponse
      */
-    public function update(Request $request, user $user)
+    public function update(Request $request, int $id): RedirectResponse
     {
-        //
+        // Get All Inputs From the form
+        $inputs = $request->all();
+
+        // Validate inputs
+        $request->validate([
+            'username' => 'required',
+            'email' => 'required',
+            'password' => 'required'
+        ]);
+
+        // Find User ID
+        $user = User::withoutTrashed()->findOrFail($id);
+        $user_name = $inputs['username'];
+        $email = $inputs['email'];
+        $password = $inputs['password'];
+        $user->name = $user_name;
+        $user->email = $email;
+        $user->password = $password;
+//        dd($input);
+
+        // Insert in Database
+        $user->save();
+
+        // Status for Editing the User in The System!
+        $alert_status = 'alert-success';
+        // Msg
+        $msg = "Edit User $user_name Successfully.";
+        // Pref
+        $pref = "You Edit $user_name User in The System!<br>His ID : {$id} ,His Email : $email . ";
+        $status = ['alert_status' => $alert_status, 'msg' => $msg, 'pref' => $pref];
+
+        return redirect()->route('dashboard.users.index')->with('status', $status);
+
     }
 
     /**
@@ -139,55 +177,84 @@ class UserController extends Controller
         return redirect()->route('dashboard.users.index')->with('status', $status);
     }
 
-    /**
-     * @param int $id
-     * @return RedirectResponse
-     */
-    public function restore_from_trashed(int $id): RedirectResponse
-    {
-        // Find User ID
-        $user = User::withTrashed()->findOrFail($id);
-        $user_id = $id;
-        $user_name = $user->name;
-        $user_email = $user->email;
-        $alert_status = 'alert-success';
-        // Msg
-        $msg = "Restore User $user_name Successfully.";
-        // Pref
-        $pref = "You Restore $user_name User from The System!<br>His ID : {$user_id} ,His Email : $user_email . ";
-        $status = ['alert_status' => $alert_status, 'msg' => $msg, 'pref' => $pref];
-
-        /*Restore*/
-        $user->restore();
-        // Restore in one line
-        //User::withTrashed()->find($id)->restore();
-
-        return redirect()->route('dashboard.users.index')->with('status', $status);
-    }
-
-    /**
-     * @param int $id
-     * @return RedirectResponse
-     */
-    public function delete_from_trashed(int $id): RedirectResponse
-    {
-        // Find User ID in the trashed
-        $user = User::onlyTrashed()->findOrFail($id);
-        $user_id = $id;
-        $user_name = $user->name;
-        $user_email = $user->email;
-        $alert_status = 'alert-success';
-        // Msg
-        $msg = 'Delete User ' . $user_name . ' From The Trashed Successfully.';
-        // Pref
-        $pref = "You Delete $user_name User from The System!<br>His ID : {$user_id} ,His Email : $user_email . ";
-        $status = ['alert_status' => $alert_status, 'msg' => $msg, 'pref' => $pref];
-
-        /* Force Delete (Permanently) To delete from soft-deleted (trashed) data */
-        $user->forceDelete();
-
-        // Redirect to User Table
-        return redirect()->route('dashboard.users.index')->with('status', $status);
-    }
+    /*Trash*/
+//    /**
+//     * Display a listing of the resource.
+//     *
+//     * @return Response
+//     */
+//    public function users_trash_index(): Response
+//    {
+//        $users = User::onlyTrashed()->paginate(10);
+////        $users = DB::table('users')->whereNotNull('deleted_at')->paginate(10);
+//
+//        return response()->view('dashboard.users.trash.index', ['users' => $users]);
+//    }
+//
+//    /**
+//     * @param int $id
+//     * @return RedirectResponse
+//     */
+//    public function restore_user(int $id): RedirectResponse
+//    {
+//        // Find User ID
+//        $user = User::onlyTrashed()->findOrFail($id);
+//        $user_id = $id;
+//        $user_name = $user->name;
+//        $user_email = $user->email;
+//        $alert_status = 'alert-success';
+//        // Msg
+//        $msg = "Restore User $user_name Successfully.";
+//        // Pref
+//        $pref = "You Restore $user_name User from The System!<br>His ID : {$user_id} ,His Email : $user_email . ";
+//        $status = ['alert_status' => $alert_status, 'msg' => $msg, 'pref' => $pref];
+//
+//        /*Restore*/
+//        $user->restore();
+//        // Restore in one line
+//        //User::withTrashed()->find($id)->restore();
+//
+//        return redirect()->route('dashboard.users.trash.index')->with('status', $status);
+//    }
+//
+//    /**
+//     * Display the specified resource.
+//     *
+//     * @param int $id
+//     * @return Response
+//     */
+//    public function view_user_in_trash(int $id): Response
+//    {
+//        // Find User ID
+//        $user = User::onlyTrashed()->findOrFail($id);
+//        return response()->view('dashboard.users.trash.show', ['user' => $user]);
+//    }
+//
+//    /**
+//     * Remove the specified resource from storage.
+//     *
+//     * @param int $id
+//     * @return RedirectResponse
+//     */
+//    public function delete_from_trash(int $id): RedirectResponse
+//    {
+//        // Find User ID in the trashed
+//        $user = User::onlyTrashed()->findOrFail($id);
+//        $user_id = $id;
+//        $user_name = $user->name;
+//        $user_email = $user->email;
+//        $alert_status = 'alert-success';
+//        // Msg
+//        $msg = 'Delete User ' . $user_name . ' From The Trashed Successfully.';
+//        // Pref
+//        $pref = "You Delete $user_name User from The System!<br>His ID : {$user_id} ,His Email : $user_email . ";
+//        $status = ['alert_status' => $alert_status, 'msg' => $msg, 'pref' => $pref];
+//
+//        /* Force Delete (Permanently) To delete from soft-deleted (trashed) data */
+//        $user->forceDelete();
+//
+//        // Redirect to User Table
+//        return redirect()->route('dashboard.users.trash..index')->with('status', $status);
+//    }
 
 }
