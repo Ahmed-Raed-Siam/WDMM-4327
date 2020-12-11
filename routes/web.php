@@ -3,8 +3,9 @@
 use App\Http\Controllers\Dashboard\CategoryController;
 use App\Http\Controllers\FrontSiteController;
 use App\Http\Controllers\Dashboard\DashboardController;
-use App\Http\Controllers\Dashboard\PostController;
+use App\Http\Controllers\Dashboard\UserTrashController;
 use App\Http\Controllers\Dashboard\UserController;
+use App\Http\Controllers\Dashboard\PostController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -38,41 +39,25 @@ Route::get('saveEditPost', [PostController::class, 'listPost']);*/
 //];
 Route::name('dashboard.')->prefix('admin')->group(function () {
     Route::get('/', [DashboardController::class, 'index']);
+    /*OLD*/
+    // Route::get('users/'.'trash', [UserController::class, 'users_trash_index'])->name('users.trash.index');
+    // Route::get('users/trash', [UserTrashController::class, 'index'])->name('users.trash.index');
+    // Route::get('users/trash/{user_id}', [UserTrashController::class, 'destroy'])->name('users.trash.destroy');
+    // Route::put('users/trash/{user_id}', [UserTrashController::class, 'restore'])->name('users.trash.restore');
+     Route::patch('users/trash/{user_id}', [UserTrashController::class, 'restore'])->name('users.trash.restore');
+    /*Restore Route*/
+/*    Route::match(['put', 'patch'], 'users/trash/{user_id}', [
+        'users/trash/{user_id}' => [UserTrashController::class, 'restore'],
+        'as' => 'users.trash.restore',
+    ]);*/
+    Route::name('users')->resource('users/trash', UserTrashController::class)->parameters([
+        'trash' => 'user_id'
+    ])->only([
+        'index', 'show', 'destroy'
+    ]);
     Route::resource('users', UserController::class);
     Route::resource('categories', CategoryController::class);
     Route::resource('posts', PostController::class);
 //    Route::resource('comments',CommentController::class);
 
 });
-
-//Route::get('/', [App\Http\Controllers\FrontSiteController::class, 'showHome'])->name('frontSite.home');
-//Route::get('/', [App\Http\Controllers\FrontSiteController::class, 'showBlog'])->name('frontSite.blog');
-//Route::get('/', [App\Http\Controllers\FrontSiteController::class, 'showSingle'])->name('frontSite.single');
-//Route::get('/', [App\Http\Controllers\FrontSiteController::class, 'showContact'])->name('frontSite.contact');
-
-
-/*--OLD--*/
-//Route::get('/', function () {
-//    return view('welcome');
-//})->name('welcome');
-//
-///* Change index view to home view*/
-////Route::get('/', function () {
-////    return view('frontSite.home');
-////})->name('frontSite.home');
-//
-//Route::get('home', function () {
-//    return view('frontSite.home');
-//})->name('frontSite.home');
-//
-//Route::get('blog', function () {
-//    return view('frontSite.blog');
-//})->name('frontSite.blog');
-//
-//Route::get('single', function () {
-//    return view('frontSite.single');
-//})->name('frontSite.single');
-//
-//Route::get('contact', function () {
-//    return view('frontSite.contact');
-//})->name('frontSite.contact');
