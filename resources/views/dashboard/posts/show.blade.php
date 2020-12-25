@@ -27,7 +27,7 @@
                 <dd class="col-sm-9">{{ $post->title }}</dd>
 
                 <dt class="col-sm-3">Body</dt>
-                <dd class="col-sm-9">{{ $post->body }}</dd>
+                <dd class="col-sm-9">{!! html_entity_decode($post->body) !!}</dd>
 
                 <dt class="col-sm-3">Feature Image</dt>
                 <dd class="col-sm-9">{{ $post->feature_image }}</dd>

@@ -6,6 +6,7 @@ use App\Models\Role;
 use App\Models\RoleUser;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Facades\DB;
 
 class RoleUserFactory extends Factory
 {
@@ -25,7 +26,10 @@ class RoleUserFactory extends Factory
     {
         return [
             'user_id' => User::all()->random(),
-            'role_id' => Role::all()->random()
+//            'role_id' => Role::all()->random(),
+//            'role_id' => Role::all()->max(),
+//            'role_id' => $this->faker->unique()->numberBetween(1, Role::max('id')),
+            'role_id' => $this->faker->unique()->numberBetween(1, DB::table('roles')->max('id')),
         ];
     }
 }

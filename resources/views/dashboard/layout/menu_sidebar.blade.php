@@ -99,6 +99,7 @@
                         </li>
                     </ul>
                 </li>
+            <!--{{--Users--}}-->
                 <li class="nav-item {{ \Illuminate\Support\Facades\Request::is('admin/users','admin/users/create','admin/users/trash') ? 'menu-is-opening menu-open' : '' }}">
                     <a href="{{ route('dashboard.users.index') }}"
                        class="nav-link {{ \Illuminate\Support\Facades\Request::is('admin/users','admin/users/create','admin/users/trash') ? 'active' : '' }}">
@@ -112,6 +113,7 @@
                         <li class="nav-item">
                             <a href="{{ route('dashboard.users.index') }}"
                                class="nav-link {{ \Illuminate\Support\Facades\Request::is('admin/users') ? 'active' : '' }}">
+                                {{--                                <i class="{{ \Illuminate\Support\Facades\Request::is('admin/users') ? 'far fa-dot-circle' : 'far fa-circle' }} nav-icon"></i>--}}
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Users Table</p>
                             </a>
@@ -132,6 +134,70 @@
                         </li>
                     </ul>
                 </li>
+            <!--{{--Roles & Users Roles--}}-->
+                <li class="nav-item {{ \Illuminate\Support\Facades\Request::is('admin/roles','admin/roles/create','admin/users/roles','admin/users/roles/create') ? 'menu-is-opening menu-open' : '' }}">
+                    <a href="{{ route('dashboard.roles.index') }}"
+                       class="nav-link {{ \Illuminate\Support\Facades\Request::is('admin/roles','admin/roles/create','admin/users/roles','admin/users/roles/create') ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-user-lock"></i>
+                        <p>
+                            Roles
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item {{ \Illuminate\Support\Facades\Request::is('admin/roles','admin/roles/create') ? 'menu-is-opening menu-open' : '' }}">
+                            <a href="{{ route('dashboard.roles.index') }}"
+                               class="nav-link {{ \Illuminate\Support\Facades\Request::is('admin/roles','admin/roles/create') ? 'active' : '' }}">
+                                <i class="nav-icon fas fa-file-signature"></i>
+                                <p>
+                                    Roles
+                                    <i class="fas fa-angle-left right"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{{ route('dashboard.roles.index') }}"
+                                       class="nav-link {{ \Illuminate\Support\Facades\Request::is('admin/roles') ? 'active' : '' }}">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Roles Table</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('dashboard.roles.create') }}"
+                                       class="nav-link {{ \Illuminate\Support\Facades\Request::is('admin/roles/create') ? 'active' : '' }}">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Add Role</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item {{ \Illuminate\Support\Facades\Request::is('admin/users/roles','admin/users/roles/create') ? 'menu-is-opening menu-open' : '' }}">
+                            <a href="{{ route('dashboard.users.roles.index') }}"
+                               class="nav-link {{ \Illuminate\Support\Facades\Request::is('admin/users/roles','admin/users/roles/create') ? 'active' : '' }}">
+                                <i class="nav-icon fas fa-users-cog"></i>
+                                <p>
+                                    Users Roles
+                                    <i class="fas fa-angle-left right"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{{ route('dashboard.users.roles.index') }}"
+                                       class="nav-link {{ \Illuminate\Support\Facades\Request::is('admin/users/roles') ? 'active' : '' }}">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Users Roles Table</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('dashboard.users.roles.create') }}"
+                                       class="nav-link {{ \Illuminate\Support\Facades\Request::is('admin/users/roles/create') ? 'active' : '' }}">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Add Users Roles</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
             </ul>
         </nav>
         <!-- /.sidebar-menu -->

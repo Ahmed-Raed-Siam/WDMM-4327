@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\Dashboard\CategoryController;
+use App\Http\Controllers\Dashboard\RoleController;
+use App\Http\Controllers\Dashboard\UserRoleController;
 use App\Http\Controllers\FrontSiteController;
 use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Dashboard\UserTrashController;
@@ -44,18 +46,22 @@ Route::name('dashboard.')->prefix('admin')->group(function () {
     // Route::get('users/trash', [UserTrashController::class, 'index'])->name('users.trash.index');
     // Route::get('users/trash/{user_id}', [UserTrashController::class, 'destroy'])->name('users.trash.destroy');
     // Route::put('users/trash/{user_id}', [UserTrashController::class, 'restore'])->name('users.trash.restore');
-     Route::patch('users/trash/{user_id}', [UserTrashController::class, 'restore'])->name('users.trash.restore');
+    Route::patch('users/trash/{user_id}', [UserTrashController::class, 'restore'])->name('users.trash.restore');
     /*Restore Route*/
-/*    Route::match(['put', 'patch'], 'users/trash/{user_id}', [
-        'users/trash/{user_id}' => [UserTrashController::class, 'restore'],
-        'as' => 'users.trash.restore',
-    ]);*/
+    /*    Route::match(['put', 'patch'], 'users/trash/{user_id}', [
+            'users/trash/{user_id}' => [UserTrashController::class, 'restore'],
+            'as' => 'users.trash.restore',
+        ]);*/
     Route::name('users')->resource('users/trash', UserTrashController::class)->parameters([
         'trash' => 'user_id'
     ])->only([
         'index', 'show', 'destroy'
     ]);
+    Route::name('users')->resource('users/roles', UserRoleController::class)->parameters([
+        'role' => 'user_role'
+    ]);
     Route::resource('users', UserController::class);
+    Route::resource('roles', RoleController::class);
     Route::resource('categories', CategoryController::class);
     Route::resource('posts', PostController::class);
 //    Route::resource('comments',CommentController::class);

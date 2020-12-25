@@ -6,28 +6,9 @@
 @csrf
 @section('content')
     {{--Update Status--}}
-    @if( session('status') )
-        <div class="alert {{ session('status')['alert_status'] }} alert-dismissible fade show" role="alert">
-            <strong>{{ session('status')['msg'] }}</strong>
-            <p>
-                {!! session('status')['pref'] !!}
-            </p>
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-    @endif
-    {{--Simple Error Tracing--}}
-    @if ($errors->any())
-        <div class="alert alert-danger">
-            <strong>Whoops!</strong> There were some problems with your input.<br><br>
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
+    @include('dashboard.status.status')
+    {{--simple error tracing--}}
+    @include('dashboard.simple error tracing.simple_error_tracing')
     <div class="card card-primary">
         <div class="card-header">
             <h3 class="card-title">{{ ucfirst($page_title) }}</h3>
@@ -45,19 +26,59 @@
                 <!-- Username input -->
                 <div class="form-group">
                     <label for="inputUsername">Username</label>
-                    <input name="username" type="text" class="form-control" id="inputUsername"
-                           placeholder="Enter username">
+                    <input name="username" type="text" class="form-control @error('username') is-invalid @enderror"
+                           id="inputUsername"
+                           placeholder="Enter username" value="{{ old('username') }}">
+                    @error('username')
+                    <span class="text-sm text-danger">{{ $message }}</span>
+                    @enderror
+                </div>
+                <!-- User Role input -->
+                <div class="form-group">
+                    <label>Select Roles :</label><br>
+                    <div class="row">
+                        @foreach($roles as $role)
+                            <div class="col-6">
+                                <label class="custom-control "><input type="checkbox" name="roles[]"
+                                                                      class="form-check-input"
+                                                                      value="{{ $role->id }}"
+                                                                      {{--{{( is_array(old('roles')) && in_array($role->id, old('roles'), true)  ? 'checked' : '' )}}--}}
+                                                                      @if(is_array(old('roles')) && in_array($role->id, old('roles'), false)) checked @endif
+
+                                    >{{ $role->name }}</label>
+                            </div>
+                        @endforeach
+                    </div>
                 </div>
                 <!-- Email input -->
                 <div class="form-group">
                     <label for="InputEmail">Email address</label>
-                    <input name="email" type="email" class="form-control" id="InputEmail" placeholder="Enter email">
+                    <input name="email" type="email" class="form-control @error('email') is-invalid @enderror"
+                           id="InputEmail" placeholder="Enter email" value="{{ old('email') }}">
+                    @error('email')
+                    <span class="text-sm text-danger">{{ $message }}</span>
+                    @enderror
                 </div>
                 <!-- Password input -->
                 <div class="form-group">
                     <label for="InputPassword">Password</label>
-                    <input name="password" type="password" class="form-control" id="InputPassword"
+                    <input name="password" type="password" class="form-control @error('password') is-invalid @enderror"
+                           id="InputPassword"
                            placeholder="Password">
+                    @error('password')
+                    <span class="text-sm text-danger">{{ $message }}</span>
+                    @enderror
+                </div>
+                <!-- Confirm Password input -->
+                <div class="form-group">
+                    <label for="InputConfirmPassword">Confirm Password</label>
+                    <input name="password_confirmation" type="password"
+                           class="form-control @error('password_confirmation') is-invalid @enderror"
+                           id="InputConfirmPassword"
+                           placeholder="Retype password">
+                    @error('password_confirmation')
+                    <span class="text-sm text-danger">{{ $message }}</span>
+                    @enderror
                 </div>
             </div>
             <!-- /.card-body -->

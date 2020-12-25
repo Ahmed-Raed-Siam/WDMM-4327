@@ -1,12 +1,12 @@
 @extends('dashboard.layout.master')
 
 @section('page-title')
-    {{ $page_title=ucwords('view user') }}
+    {{ $page_title=ucwords('view user roles') }}
 @endsection
 @section('content')
     <div class="card">
         <div class="card-header">
-            <h3 class="card-title">{{ ucfirst(trans($page_title.' '.$user->id)) }}</h3>
+            <h3 class="card-title">{{ ucfirst(trans(substr($page_title,0,-5).' '.$user->id.' '.substr($page_title,strlen($page_title)-5,strlen($page_title)))) }}</h3>
 
             <div class="card-tools">
                 <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
@@ -29,9 +29,7 @@
                     <dt class="col-sm-3">User roles</dt>
                     <dd class="col-sm-9">
                         @foreach($user_roles as $role)
-                            {{--{{ ucfirst($role->name) }}--}}
                             @if(!$loop->last)
-                                {{--{{ ' ,' }}--}}
                                 {{ ucfirst($role->name).' ,' }}
                             @elseif($loop->last)
                                 {{ ucfirst($role->name) }}

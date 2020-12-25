@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
+use App\Models\Role;
+use App\Models\RoleUser;
 use App\Models\user;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -33,7 +35,8 @@ class UserController extends Controller
      */
     public function create(): Response
     {
-        return response()->view('dashboard.users.create');
+        $roles = Role::all();
+        return response()->view('dashboard.users.create', ['roles' => $roles]);
     }
 
     /**
@@ -49,8 +52,10 @@ class UserController extends Controller
         // Validate inputs
         $request->validate([
             'username' => 'required',
+            'roles' => 'exists:roles,id',
             'email' => 'required',
-            'password' => 'required'
+            'password' => 'required|min:6|confirmed',
+            'password_confirmation' => 'required|same:password'
         ]);
 
         // Create instance from user model
@@ -61,20 +66,47 @@ class UserController extends Controller
         $user->name = $user_name;
         $user->email = $email;
         $user->password = $password;
-//        print_r($input);
-//        dd($input);
+        //print_r($input);
+        //dd($input);
 
-        // Insert in Database
+        // Add a role to a user
+//        $user->roles()->attach($role_id);
+        // Insert in Users Table--Database
         $user->save();
+
+        // Check is there is any role for this user
+        if ($request->has('roles') && $request->filled('roles')) {
+            $roles_checkbox_array = $input['roles'];
+        } else {
+            $roles_checkbox_array = [];
+        }
+
+        $count_roles_checkbox = count($roles_checkbox_array);
+        $user_roles = '';
+        $roles_can_save = 0;
+        if ($count_roles_checkbox >= 0) {
+            $roles_can_save = 1;
+            foreach ($roles_checkbox_array as $role_element) {
+                $role_model = Role::where('id', (int)$role_element)->firstOrFail();
+                $user_roles .= ucfirst($role_model->name) . ' , ';
+            }
+            $user_roles = substr($user_roles, 0, -3);
+        }
+
+        // Save User Roles if founded
+        if ($roles_can_save === 1) {
+            $user->roles()->attach($roles_checkbox_array);
+        }
 
         // Get Last ID || User ID
         $user_id = User::all()->last();
+
         // Status for Adding the New User To The System!
         $alert_status = 'alert-success';
         // Msg
         $msg = 'New User Added Successfully.';
         // Pref
-        $pref = "You Add $user_name As New User To The System!<br>His ID : {$user_id['id']} ,His Email : $email . ";
+        $pref = "You Add $user_name As New User To The System!<br>His ID : {$user_id['id']} ,His Email : $email . User roles : $user_roles . ";
         $status = ['alert_status' => $alert_status, 'msg' => $msg, 'pref' => $pref];
 
         return redirect()->back()->with('status', $status);
@@ -90,7 +122,37 @@ class UserController extends Controller
     {
         // Find User ID
         $user = User::withoutTrashed()->findOrFail($id);
-        return response()->view('dashboard.users.show', ['user' => $user]);
+//        $user_roles = User::withoutTrashed()->whereHas('roles')->where('users.id', $id)->firstOrFail()->roles()->get();
+//        $user_roles = User::withoutTrashed()->whereHas('roles')->firstOrFail()->roles()->get();
+//        $user_roles = $user->whereHas('roles')->find($id)->roles()->get();
+        $user_roles = $user->whereHas('roles')->find($id);
+        /*        $count_roles_array = count($roles_array);
+                $user_roles = '';
+                $roles_can_save = 0;
+                if ($count_roles_array >= 0) {
+                    $roles_can_save = 1;
+                    foreach ($roles_array as $role_element) {
+                        $role_model = Role::where('id', (int)$role_element)->firstOrFail();
+                        $user_roles .= ucfirst($role_model->name) . ' , ';
+                    }
+                    $user_roles = substr($user_roles, 0, -3);
+                }*/
+        if (is_null($user_roles)) {
+
+            //echo "<hr>";
+            //echo "<h1>Null</h1>";
+            //echo "<hr>";
+            return response()->view('dashboard.users.show', ['user' => $user]);
+
+        }
+        $user_roles = $user_roles->roles()->get();
+        //echo "<hr>";
+        //echo "<h1>Exists</h1>";
+        //echo "<hr>";
+        return response()->view('dashboard.users.show', ['user' => $user, 'user_roles' => $user_roles]);
+//        dd($user, $user_roles);
+//        dd($user, $user_roles, count($user_roles));
+
     }
 
     /**
@@ -103,7 +165,9 @@ class UserController extends Controller
     {
         // Find User ID
         $user = User::withoutTrashed()->findOrFail($id);
-        return response()->view('dashboard.users.edit', ['user' => $user]);
+        $roles = Role::all();
+        $user_roles = RoleUser::where('user_id', $id)->get();
+        return response()->view('dashboard.users.edit', ['user' => $user, 'roles' => $roles, 'user_roles' => $user_roles]);
     }
 
     /**
@@ -121,8 +185,10 @@ class UserController extends Controller
         // Validate inputs
         $request->validate([
             'username' => 'required',
+            'roles' => 'exists:roles,id',
             'email' => 'required',
-            'password' => 'required'
+            'password' => 'required|min:6|confirmed',
+            'password_confirmation' => 'required|same:password'
         ]);
 
         // Find User ID
@@ -138,12 +204,36 @@ class UserController extends Controller
         // Insert in Database
         $user->save();
 
+        // Check is there is any role for this user
+        if ($request->has('roles') && $request->filled('roles')) {
+            $roles_checkbox_array = $inputs['roles'];
+        } else {
+            $roles_checkbox_array = [];
+        }
+
+        $count_roles_checkbox = count($roles_checkbox_array);
+        $user_roles = '';
+        $roles_can_save = 0;
+        if ($count_roles_checkbox >= 0) {
+            $roles_can_save = 1;
+            foreach ($roles_checkbox_array as $role_element) {
+                $role_model = Role::where('id', (int)$role_element)->firstOrFail();
+                $user_roles .= ucfirst($role_model->name) . ' , ';
+            }
+            $user_roles = substr($user_roles, 0, -3);
+        }
+
+        // Save User Roles if founded
+        if ($roles_can_save === 1) {
+            $user->roles()->sync($roles_checkbox_array, true);
+        }
+
         // Status for Editing the User in The System!
         $alert_status = 'alert-success';
         // Msg
         $msg = "Edit User $user_name Successfully.";
         // Pref
-        $pref = "You Edit $user_name User in The System!<br>His ID : {$id} ,His Email : $email . ";
+        $pref = "You Edit $user_name User in The System!<br>His ID : {$id} ,His Email : $email . User roles : $user_roles . ";
         $status = ['alert_status' => $alert_status, 'msg' => $msg, 'pref' => $pref];
 
         return redirect()->route('dashboard.users.index')->with('status', $status);

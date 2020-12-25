@@ -6,6 +6,7 @@
 @endsection
 @csrf
 @section('content')
+    @include('dashboard.status.status')
     <div class="card p-2">
         <div class="card-header">
             <h3 class="card-title">{{ ucfirst($page_title) }}</h3>
@@ -106,7 +107,7 @@
                                 View
                             </a>
                             <a class="btn btn-info btn-sm"
-                               href="#"
+                               href="{{ route('dashboard.posts.edit',$post->id) }}"
                                data-toggle="tooltip" data-placement="top"
                                title="Edit Post {{ $counter }}">
                                 <i class="fas fa-pencil-alt"></i>

@@ -5,9 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
-use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
-class Tag extends Model
+class Image extends Model
 {
     use HasFactory;
 
@@ -17,18 +16,14 @@ class Tag extends Model
      * @var array
      */
     protected $fillable = [
-        'name',
+        'url',
     ];
 
-
-    public function posts(): MorphToMany
+    /**
+     * @return MorphTo
+     */
+    public function imageable(): MorphTo
     {
-        return $this->morphedByMany(Post::class, 'taggable');
+        return $this->morphTo();
     }
-
-    public function videos(): MorphToMany
-    {
-        return $this->morphedByMany(Video::class, 'taggable');
-    }
-
 }
